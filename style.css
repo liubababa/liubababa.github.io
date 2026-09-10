@@ -511,6 +511,10 @@ section[id], article[id] { scroll-margin-top: 96px; }
   transition: transform 0.9s var(--ease), filter 0.6s var(--ease);
   filter: grayscale(0.15);
 }
+/* 金彩奖三张：露出上半部分（奖项名称），红章区域可不露出 */
+.awards-grid .award:nth-child(-n+3) .award-img img {
+  object-position: center top;
+}
 .award:hover .award-img img { transform: scale(1.04); filter: grayscale(0); }
 .award .t1 { font-size: 16px; font-weight: 500; line-height: 1.35; }
 .award .t2 { font-size: 14px; color: var(--dim2); margin-top: 8px; }
