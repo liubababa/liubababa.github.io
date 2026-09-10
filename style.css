@@ -1,0 +1,421 @@
+/* 刘一锟 作品集 — nendo 设计语言 */
+
+/* 展示字体：字魂扁桃体（用户提供，标题层用；正文沿用 --sans 保证长文可读性） */
+@font-face{
+  font-family:'字魂扁桃体';
+  src:url('fonts/font-zh.ttf') format('truetype');
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+
+:root{
+  --ink:#5a5a5a;
+  --hover:#c0bcbc;
+  --line:#eaeaea;
+  --bg:#ffffff;
+  --sans:"Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "YuGothic", sans-serif;
+  --display:'字魂扁桃体', "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+::selection{background:#eee}
+
+/* 悬停唤出式固定导航：
+   平时主体上滑到视口外，仅保留页面顶部 6px 细提示带(.peek)；
+   鼠标靠近顶部/点击提示带/滚回顶部时滑出；离开约 400ms 自动收起 */
+nav.top{
+  position:fixed;top:0;left:0;right:0;z-index:90;
+  height:78px;
+  pointer-events:none; /* 容器不拦截，仅 peek / bar 可交互 */
+}
+/* 顶部 6px 提示带：常驻可视；自身+透明延展区即 hover/点击热区 */
+nav.top .peek{
+  position:absolute;top:0;left:0;right:0;height:6px;z-index:1;
+  pointer-events:auto;cursor:pointer;
+  background:linear-gradient(180deg,rgba(90,90,90,.45),rgba(90,90,90,.14) 92%);
+}
+nav.top .peek::after{
+  content:'';position:absolute;left:0;right:0;top:6px;height:14px;
+}
+/* 展开面板：实心毛玻璃 + 阴影，文字不透明；默认收起于视口外 */
+nav.top .bar{
+  position:absolute;top:0;left:0;right:0;height:78px;z-index:2;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 40px 0 26px;
+  background:rgba(255,255,255,.9);
+  -webkit-backdrop-filter:blur(16px) saturate(1.1);
+  backdrop-filter:blur(16px) saturate(1.1);
+  box-shadow:0 1px 0 rgba(0,0,0,.05),0 14px 34px rgba(0,0,0,.08);
+  transform:translateY(-100%);
+  transition:transform .42s cubic-bezier(.22,1,.36,1);
+  pointer-events:auto;
+}
+nav.top.nav-open .bar{transform:translateY(0)}
+nav.top .logo{font-size:16px;font-weight:500;letter-spacing:1px;white-space:nowrap}
+nav.top .logo a{text-decoration:none;color:var(--ink)}
+nav.top .menu{display:flex;gap:40px}
+nav.top .menu a{
+  color:var(--ink);text-decoration:none;
+  font-size:14px;font-weight:400;letter-spacing:1px;line-height:21px;
+  transition:color .5s;
+}
+nav.top .menu a:hover{color:var(--hover)}
+
+main{padding-top:78px}
+.wrap{padding-left:15px;padding-right:15px}
+
+/* ---------- 首页 hero：定位语 + 单张代表图 ---------- */
+.hero{
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);
+  gap:clamp(40px,7vw,100px);align-items:center;
+  min-height:calc(100vh - 78px);
+  padding:clamp(48px,9vh,110px) 15px clamp(64px,12vh,150px);
+}
+.hero .pre{font-size:12px;letter-spacing:1px;margin-bottom:22px}
+.hero .claim{
+  font-family:var(--display);
+  font-size:clamp(25px,3.6vw,42px);font-weight:400;line-height:1.5;letter-spacing:0;
+  max-width:13em;
+}
+/* 左侧联动文案块：随右侧轮播切换，整块可点击跳当前作品详情页 */
+.hero-worklink{
+  display:block;margin-top:28px;min-height:96px;
+  color:var(--ink);text-decoration:none;
+  transition:opacity .16s ease;
+}
+.hero-worklink.is-fading{opacity:0}
+.hero-worklink .h-no{
+  display:block;font-size:11px;letter-spacing:2px;color:#9a9a9a;margin-bottom:8px;
+}
+.hero-worklink .h-name{
+  font-family:var(--display);
+  font-size:clamp(19px,2.2vw,25px);font-weight:400;line-height:1.45;letter-spacing:0;
+  transition:color .45s;
+}
+.hero-worklink .h-desc{
+  margin-top:6px;font-size:13px;color:#8f8f8f;line-height:1.8;
+  transition:color .45s;
+}
+.hero-worklink:hover .h-name,.hero-worklink:hover .h-desc{color:var(--hover)}
+.hero .pic{justify-self:end;width:min(100%,560px)}
+
+/* ---------- 首页 hero 右侧作品图卡轮播（淡入淡出） ---------- */
+.hero-slider{
+  position:relative;
+  width:min(100%,560px);
+  aspect-ratio:3/2;
+  background:#fff;
+}
+/* 兼容兜底：显式撑起 3:2 容器高度（部分渲染引擎对纯 absolute 子元素 + aspect-ratio 不给高度） */
+.hero-slider::before{
+  content:'';display:block;padding-top:66.6667%;
+  pointer-events:none;
+}
+.hero-slide{
+  position:absolute;inset:0;display:block;
+  opacity:0;visibility:hidden;
+  transition:opacity .9s ease;
+}
+.hero-slide.is-active{opacity:1;visibility:visible;z-index:1}
+.hero-slide img{width:100%;height:100%;object-fit:cover}
+/* 竖长海报在 3:2 容器内取中上段（品牌元素解析区），避免裁到顶部不完整 logo */
+.hero-slider a:nth-of-type(4) img{object-position:50% 45%}
+/* 酷冷至尊封面：品牌识别系统标题与 LOGO 位于画面左侧，左对齐完整呈现 */
+.hero-slider a:nth-of-type(5) img{object-position:left center}
+.hero-slide.is-broken{opacity:0;visibility:hidden;pointer-events:none}
+/* 右下角指示器：小圆点行 + 极细进度线 */
+.hero-dots{
+  position:absolute;right:0;bottom:-32px;z-index:2;
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+}
+.hero-dot{
+  width:18px;height:18px;padding:0;border:0;background:none;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+}
+.hero-dot::before{
+  content:'';width:7px;height:7px;border-radius:50%;
+  background:rgba(90,90,90,.25);
+  transition:background .4s ease;
+}
+.hero-dot.is-active::before{background:#5a5a5a}
+.hero-line{
+  display:block;width:100%;height:1px;
+  background:rgba(90,90,90,.16);
+  overflow:hidden;
+}
+.hero-line .fill{
+  display:block;height:100%;width:100%;
+  background:#5a5a5a;
+  transform:scaleX(0);transform-origin:left;
+}
+.hero-slider.playing .hero-line .fill{animation:hero-progress 4s linear forwards}
+.hero-slider.is-paused .hero-line .fill{animation-play-state:paused}
+@keyframes hero-progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ---------- 通用区块 ---------- */
+.sec,.profile,.hero,.dhead,.dbody,.pn-wrap{scroll-margin-top:90px}
+.sec{padding-top:clamp(70px,11vh,130px)}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:38px}
+.sec-head .tt{font-size:12px;letter-spacing:1px}
+.sec-head .more{font-size:12px;letter-spacing:1px;text-decoration:none;color:var(--ink);transition:color .5s}
+.sec-head .more:hover{color:var(--hover)}
+
+/* 作品格子入口（双图平滑过渡）5 项目：桌面 3 列自然换行 3+2 */
+.works-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.wcard{display:block;color:inherit;text-decoration:none}
+.thumb{position:relative;aspect-ratio:3/2;overflow:hidden;background:#f5f5f3}
+.thumb img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+  opacity:0;transition:opacity .9s ease;
+}
+.thumb img.a{opacity:1}
+.wcard:hover .thumb img.a{opacity:0}
+.wcard:hover .thumb img.b{opacity:1}
+.wcard .name{margin-top:16px;font-size:14px;font-weight:400;line-height:1.5;color:var(--ink);transition:color .5s;font-family:var(--display)}
+.wcard .meta{margin-top:3px;font-size:12px;color:var(--ink)}
+.wcard:hover .name{color:var(--hover)}
+
+/* ---------- 获奖缩略陈列 ---------- */
+.awards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;align-items:start}
+.award .thumbimg{background:#f7f7f5}
+.award .thumbimg img{width:100%}
+.award .t1{margin-top:14px;font-size:13px;font-weight:400;line-height:1.6;font-family:var(--display)}
+.award .t2{margin-top:3px;font-size:12px;line-height:1.7}
+.award .t3{margin-top:3px;font-size:11px;line-height:1.7}
+
+/* ---------- 技能认证（与赛事获奖分开呈现） ---------- */
+.certs{display:flex;gap:30px;flex-wrap:wrap;align-items:flex-start}
+.cert{display:flex;gap:24px;flex-wrap:wrap;max-width:680px}
+.cert .thumbimg{width:210px;flex:none;background:#f7f7f5}
+.cert .thumbimg img{width:100%}
+.cert .info{min-width:260px;flex:1;padding-top:2px}
+.cert .t1{font-size:14px;font-weight:400;line-height:1.6;font-family:var(--display)}
+.cert .t2{margin-top:6px;font-size:12px;line-height:1.9}
+.cert .t3{margin-top:4px;font-size:11px;line-height:1.9}
+
+/* ---------- COLLABORATIONS：灰阶滚动 LOGO 墙 ---------- */
+.logo-marquee{
+  overflow:hidden;
+  background:#2b2b2b;
+  padding:clamp(26px,4vw,40px) 0;
+}
+.logo-track{
+  display:flex;
+  width:max-content;
+  animation:logo-scroll 30s linear infinite;
+  will-change:transform;
+}
+.logo-group{
+  display:flex;align-items:center;flex:none;
+  gap:clamp(34px,6vw,72px);
+  padding-left:clamp(34px,6vw,72px);
+  padding-right:clamp(34px,6vw,72px);
+}
+.logo-marquee:hover .logo-track{animation-play-state:paused}
+.logo-track .brand{
+  display:inline-flex;align-items:center;
+  flex:none;
+  gap:8px;white-space:nowrap;
+}
+.logo-track .brand img{
+  flex:none;
+  max-height:30px;width:auto;height:auto;
+  filter:grayscale(1) brightness(0) invert(1);
+  opacity:.92;
+  transition:filter .45s ease,opacity .45s ease;
+}
+.logo-track .brand span{
+  font-size:13px;line-height:1;
+  color:#d8d8d8;letter-spacing:.05em;
+  transition:color .45s ease;
+}
+.logo-track .brand:hover img{filter:none;opacity:1}
+.logo-track .brand:hover span{color:#fff}
+@keyframes logo-scroll{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+
+/* ---------- PROFILE 记录式 ---------- */
+.profile{padding-top:clamp(60px,10vh,110px)}
+.prow{
+  display:grid;grid-template-columns:170px 1fr;gap:20px 44px;
+  padding:20px 0;border-top:1px solid var(--line);
+  font-size:15px;
+}
+.prow:last-of-type{border-bottom:1px solid var(--line)}
+.prow .k{font-size:12px;letter-spacing:1px;padding-top:6px}
+.prow .v{max-width:52em;line-height:2}
+.prow .v b{font-weight:700}
+.prow .v .t{display:block;font-size:13px;margin-top:2px}
+.prow.face{align-items:start}
+.prow.face img{width:180px}
+.prow.face .v{line-height:1.9}
+.prow .job{margin-bottom:16px}
+
+/* ---------- footer ---------- */
+footer.site{
+  margin-top:clamp(70px,12vh,140px);
+  border-top:1px solid var(--line);
+  padding:28px 0 40px;
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-size:11px;letter-spacing:1px;color:var(--ink);
+}
+footer.site a{color:var(--ink);text-decoration:none;transition:color .5s}
+footer.site a:hover{color:var(--hover)}
+
+/* ---------- 详情页 ---------- */
+.dhead{padding:clamp(34px,8vh,90px) 15px 10px}
+.dhead .crumb{font-size:12px;letter-spacing:1px;margin-bottom:26px}
+.dhead .crumb a{text-decoration:none;color:var(--ink);border-bottom:1px solid transparent;transition:color .5s,border-bottom-color .5s}
+.dhead .crumb a:hover{color:var(--hover);border-bottom-color:var(--hover)}
+.dhead h1{font-family:var(--display);font-size:clamp(24px,3.2vw,34px);font-weight:400;line-height:1.45}
+.dhead .en{margin-top:8px;font-size:14px}
+.dhead .desc{margin-top:20px;max-width:46em;font-size:14px;line-height:2}
+.dbody{padding-bottom:0}
+.dbody .full{margin:0}
+.dbody .full img{width:100%}
+.gcap{margin-top:16px;max-width:52em}
+.gcap .t{font-size:14px;font-weight:700;line-height:1.6}
+.gcap .d{margin-top:6px;font-size:14px;line-height:2}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:40px;align-items:start}
+.shots.cols2{grid-template-columns:repeat(2,1fr)}
+.shots figure{margin:0}
+.shots img{width:100%}
+/* 相邻项目切换 */
+.pn{
+  margin-top:clamp(60px,10vh,110px);
+  border-top:1px solid var(--line);
+  padding:36px 0 48px;
+  display:flex;justify-content:space-between;gap:24px;
+}
+.pn a{text-decoration:none;color:var(--ink);transition:color .5s}
+.pn a:hover{color:var(--hover)}
+.pn .d{display:block;font-size:11px;letter-spacing:1px;margin-bottom:5px}
+.pn .n{font-size:14px;font-weight:400;line-height:1.6;font-family:var(--display)}
+.pn .next{margin-left:auto;text-align:right}
+
+/* ---------- 柔和滚动渐显 ---------- */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform 1s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- 响应式 ---------- */
+@media (max-width:1000px){
+  .hero{grid-template-columns:1fr;min-height:auto;padding-top:70px}
+  .hero .pic{justify-self:start}
+  .works-grid{grid-template-columns:1fr 1fr}
+  .awards-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  nav.top .bar{padding:0 18px 0 18px}
+  nav.top .menu{gap:22px}
+  nav.top .menu a{font-size:13px}
+  .works-grid,.shots,.shots.cols2{grid-template-columns:1fr}
+  .shots{gap:26px}
+  .prow{grid-template-columns:1fr;gap:6px}
+  .awards-grid{grid-template-columns:1fr 1fr;gap:20px}
+  .logo-track .brand img{max-height:26px}
+  /* 认证卡片：缩略图与文字块不再受固定宽度/最小宽度挤压 */
+  .cert .thumbimg{width:min(210px,100%)}
+  .cert .info{min-width:0}
+  .pn{flex-wrap:wrap}
+}
+@media (hover:none){
+  /* 触屏：关自动滚动，改为原生横向滑动 */
+  .logo-track{animation:none}
+  .logo-marquee{overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  /* 触屏：顶部提示带点击目标适当加大 */
+  nav.top .peek::after{height:34px}
+}
+/* ---------- 手机端（360–430px）适配 ---------- */
+@media (max-width:560px){
+  /* 正文与行高：手机长文阅读舒适区 */
+  body{font-size:15px;line-height:1.85;-webkit-text-size-adjust:100%}
+
+  /* 导航：品牌 / 菜单分两行，菜单项加大点按区域，避免 5 个入口被挤出屏幕 */
+  nav.top .bar{
+    height:auto;min-height:70px;
+    flex-direction:column;align-items:flex-start;justify-content:center;
+    gap:6px;padding:10px 16px 12px;
+  }
+  nav.top .logo{font-size:14px}
+  nav.top .menu{gap:20px;width:100%;flex-wrap:wrap}
+  nav.top .menu a{font-size:12.5px;letter-spacing:.06em;padding:5px 0;touch-action:manipulation}
+  /* 顶部提示带加高，手指更容易点到 */
+  nav.top .peek{height:8px}
+  nav.top .peek::after{height:42px}
+
+  /* 首屏：左文右图改上下堆叠；轮播图满宽并保持 3:2，只裁切不拉伸 */
+  .hero{grid-template-columns:1fr;gap:34px;padding:52px 15px 76px}
+  .hero .pre{font-size:11px;line-height:1.7;margin-bottom:16px}
+  .hero .claim{font-size:clamp(22px,6.6vw,28px);line-height:1.5;max-width:100%}
+  .hero-worklink{margin-top:22px;min-height:0}
+  .hero-worklink .h-name{font-size:18px;line-height:1.45}
+  .hero-worklink .h-desc{font-size:12.5px;line-height:1.75}
+  .hero .pic{width:100%;justify-self:stretch}
+  .hero-slider{width:100%}
+  .hero-dots{bottom:-36px;gap:2px}
+  .hero-dot{width:28px;height:28px}
+
+  /* 作品格子 / 详情页图组：单列排布 */
+  .works-grid{gap:26px}
+  .wcard .name{font-size:15px}
+  .wcard .meta{font-size:12px;line-height:1.7}
+  .shots{gap:22px;margin-top:28px}
+
+  /* 详情页头部与图注 */
+  .dhead{padding:28px 15px 8px}
+  .dhead .crumb{margin-bottom:18px}
+  .dhead h1{font-size:clamp(20px,6.2vw,26px)}
+  .dhead .en{font-size:13px;line-height:1.8}
+  .dhead .desc{font-size:13.5px;line-height:1.95}
+  .gcap{margin-top:12px}
+  .gcap .t{font-size:13px}
+  .gcap .d{font-size:13.5px;line-height:1.9}
+  .pn{gap:18px}
+  .pn .n{font-size:13.5px}
+
+  /* 合作品牌墙：左右出血铺满，手指横向滑动 */
+  .logo-marquee{margin:0 -15px;padding:22px 0}
+  .logo-group{padding-left:22px;padding-right:22px;gap:26px}
+  .logo-track .brand img{max-height:24px}
+  .logo-track .brand span{font-size:12px}
+
+  /* 认证 / 个人档案 */
+  .certs{display:block}
+  /* 认证卡片：窄屏改竖排堆叠，避免缩略图占宽后文字列被挤成每行一两个字 */
+  .cert{flex-direction:column;gap:14px;max-width:100%}
+  .cert .thumbimg{width:min(210px,100%)}
+  .cert .info{width:100%;min-width:0}
+  .cert .t1,.cert .t2,.cert .t3{max-width:100%}
+  .cert .t2,.cert .t3{font-size:12px;line-height:1.85}
+  .prow.face img{width:min(180px,100%)}
+  .prow .v{font-size:13.5px;line-height:1.9}
+  footer.site{padding:22px 0 34px}
+}
+/* 触屏窄屏：隐藏为无缝滚动准备的重复副本，避免手指横滑时重复浏览 */
+@media (hover:none) and (max-width:560px){
+  .logo-group[aria-hidden="true"]{display:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  .thumb img{transition:none}
+  .logo-track{animation:none}
+  nav.top .bar{transition:none}
+  .hero-slide{transition:none}
+  .hero-line .fill{animation:none}
+}
