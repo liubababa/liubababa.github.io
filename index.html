@@ -1,0 +1,413 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>刘一锟 — 作品集 / PORTFOLIO</title>
+<meta name="description" content="刘一锟 · LIU YIKUN — 数字媒体艺术设计师 / 视觉传达实践者。作品集：品牌 IP、VI 视觉系统、文旅文创与商业视觉。">
+<link rel="preload" as="image" href="assets/images/qxm/qxm-kv.jpg">
+<link rel="stylesheet" href="style.css?v=20260911b">
+<script src="main.js?v=20260910d" defer></script>
+</head>
+<body class="page-home">
+
+<header class="topbar" id="siteTop">
+  <a class="brand" href="index.html">刘一锟<span class="dot">·</span>LIU YIKUN</a>
+  <nav class="nav" aria-label="主导航">
+      <a href="#works" data-spy>作品</a>
+      <a href="#awards" data-spy>奖项</a>
+      <a href="#collabs" data-spy>合作</a>
+      <a href="#profile" data-spy>关于</a>
+      <a href="#contact" data-spy>联系</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="hero-inner wrap">
+      <p class="kicker rv">LIU YIKUN · 数字媒体艺术设计师 / 视觉传达实践者</p>
+      <h1 class="wordmark rv">liu<span class="wm-accent">yikun</span><span class="wm-dot">.</span></h1>
+      <p class="wordmark-cn rv">作品集<span class="wm-sep">/</span>PORTFOLIO</p>
+      <p class="claim-src rv">「设计不是一种技能，而是捕捉事物本质的感觉能力与洞察能力。」— 原研哉《设计中的设计》</p>
+      <div class="hero-cta rv">
+        <a class="btn-line" href="#works">查看全部作品</a>
+        <a class="btn-line ghost" href="#profile">关于我</a>
+      </div>
+    </div>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span class="mq-item">LIU YIKUN</span><span class="mq-sep">/</span>
+        <span class="mq-item">PORTFOLIO</span><span class="mq-sep">/</span>
+        <span class="mq-item">数字媒体艺术设计师</span><span class="mq-sep">/</span>
+        <span class="mq-item">视觉传达实践者</span><span class="mq-sep">/</span>
+        <span class="mq-item">品牌 IP 设计</span><span class="mq-sep">/</span>
+        <span class="mq-item">VI 视觉系统</span><span class="mq-sep">/</span>
+        <span class="mq-item">角色设计</span><span class="mq-sep">/</span>
+        <span class="mq-item">文旅文创</span><span class="mq-sep">/</span>
+        <span class="mq-item">综艺与商业视觉</span><span class="mq-sep">/</span>
+      </div>
+    </div>
+    <span class="scroll-hint" aria-hidden="true">SCROLL<span class="sh-line"></span></span>
+  </section>
+
+  <section class="reel" id="reel" aria-label="代表作品轮播">
+    <div class="reel-stage">
+      <div class="reel-slider" id="reelSlider">
+        <a class="reel-slide is-active" href="work-qi-xiaoman.html" aria-label="齐小蔓 · 农产品品牌人格化 IP 视觉全案 主视觉">
+          <img src="assets/images/qxm/qxm-kv.jpg" alt="齐小蔓 · 农产品品牌人格化 IP 视觉全案 主视觉">
+        </a>
+        <a class="reel-slide" href="work-chengqiao.html" aria-label="程家桥 · 人文生态骑行挑战赛活动视觉">
+          <img src="assets/images/chengqiao/kv-cover.jpg" alt="程家桥 · 人文生态骑行挑战赛活动视觉">
+        </a>
+        <a class="reel-slide" href="work-shanhai.html" aria-label="山海金选 · 品牌 VI 视觉系统 · 元素解析与组合规范">
+          <img src="assets/images/shanhai/shanhai-hero.jpg" alt="山海金选 · 品牌 VI 视觉系统 · 元素解析与组合规范">
+        </a>
+        <a class="reel-slide" href="work-coolermaster.html" aria-label="酷冷至尊 · 品牌识别系统 2024">
+          <img src="assets/images/coolermaster/vi/vi-01.jpg" alt="酷冷至尊 · 品牌识别系统 2024">
+        </a>
+        <a class="reel-slide" href="work-shineyou.html" aria-label="尚誉 ShineYou · 冻转鲜面包包装设计">
+          <img src="assets/images/shineyou/shineyou-01.png" alt="尚誉 ShineYou · 冻转鲜面包包装设计">
+        </a>
+      </div>
+      <!-- 液态水滴指示器：SVG gooey 滤镜（模糊+对比度阈值）实现 metaball 融合；
+           鼠标进入轮播出现跟随光标的水滴，靠近指示水滴时相互吸引、拉丝、融合 -->
+      <svg class="reel-goo-defs" width="0" height="0" aria-hidden="true" focusable="false">
+        <defs>
+          <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"/>
+            <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+          </filter>
+        </defs>
+      </svg>
+      <svg class="reel-dropsvg" aria-hidden="true">
+        <g class="reel-dropg" filter="url(#goo)">
+          <circle class="drop-fx" r="7"></circle>
+        </g>
+      </svg>
+      <div class="reel-dropbtns" role="tablist" aria-label="代表作品轮播，点击水滴切换展示">
+          <button class="reel-dropbtn is-active" type="button" role="tab" aria-selected="true" aria-label="切换到 齐小蔓"></button>
+          <button class="reel-dropbtn" type="button" role="tab" aria-selected="false" aria-label="切换到 程家桥"></button>
+          <button class="reel-dropbtn" type="button" role="tab" aria-selected="false" aria-label="切换到 山海金选"></button>
+          <button class="reel-dropbtn" type="button" role="tab" aria-selected="false" aria-label="切换到 酷冷至尊"></button>
+          <button class="reel-dropbtn" type="button" role="tab" aria-selected="false" aria-label="切换到 尚誉 ShineYou"></button>
+      </div>
+      <span class="reel-line" aria-hidden="true"><span class="fill"></span></span>
+      <a class="reel-caption" id="reelLink" href="work-qi-xiaoman.html" aria-label="查看当前项目详情页">
+        <span class="rc-no">01</span>
+        <span class="rc-name">QI XIAOMAN 齐小蔓</span>
+        <span class="rc-desc">农产品品牌人格化 IP 视觉全案</span>
+        <span class="rc-view">查看项目</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="works wrap" id="works">
+    <div class="sec-head rv">
+      <h2 class="tt">work</h2>
+      <p class="ts">13 PROJECTS · 全部作品</p>
+    </div>
+    <div class="work-list">
+      <a class="work-row rv" data-thumb="assets/images/qxm/qxm-kv.jpg" href="work-qi-xiaoman.html">
+        <span class="w-idx">01</span>
+        <span class="w-body">
+          <span class="w-name">QI XIAOMAN 齐小蔓</span>
+          <span class="w-meta">农产品品牌人格化 IP 视觉全案 · 3 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+      <a class="work-row rv" data-thumb="assets/images/langya/langya-03.jpg" href="work-langya.html">
+        <span class="w-idx">02</span>
+        <span class="w-body">
+          <span class="w-name">琅琊名士 · 冰箱贴文创</span>
+          <span class="w-meta">Q 版卡通冰箱贴文创系列 · 10 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+      <a class="work-row rv" data-thumb="assets/images/anlin/anlin-01.jpg" href="work-anlin.html">
+        <span class="w-idx">03</span>
+        <span class="w-body">
+          <span class="w-name">安邻 CareNest</span>
+          <span class="w-meta">适老型社区居家养老服务系统与产品创新 · 11 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+      <a class="work-row rv" data-thumb="assets/images/shanhai/shanhai-01.jpg" href="work-shanhai.html">
+        <span class="w-idx">04</span>
+        <span class="w-body">
+          <span class="w-name">山海金选</span>
+          <span class="w-meta">SHAN HAI JIN XUAN 品牌 VI · 严选优品 助力振兴 · 2 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+      <a class="work-row rv" data-thumb="assets/images/coolermaster/vi/vi-01.jpg" href="work-coolermaster.html">
+        <span class="w-idx">05</span>
+        <span class="w-body">
+          <span class="w-name">酷冷至尊 CoolerMaster</span>
+          <span class="w-meta">COOLER MASTER 品牌识别系统 2024 · VI 到空间体验 · 8 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+      <a class="work-row rv" data-thumb="assets/images/myking/myking-01.jpg" href="work-myking.html">
+        <span class="w-idx">06</span>
+        <span class="w-body">
+          <span class="w-name">卖可 MYKING</span>
+          <span class="w-meta">便利店品牌升级 VI 延展 · 春日「轻甜季」营销物料 · 3 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+      <a class="work-row rv" data-thumb="assets/images/tencent/tencent-01.jpg" href="work-tencent.html">
+        <span class="w-idx">07</span>
+        <span class="w-body">
+          <span class="w-name">腾讯视频 · 明星直播物料</span>
+          <span class="w-meta">发布会直播 / 生日会线上宣传物料 · 腾讯视频实习 · 2 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+      <a class="work-row rv" data-thumb="assets/images/chengqiao/kv-cover.jpg" href="work-chengqiao.html">
+        <span class="w-idx">08</span>
+        <span class="w-body">
+          <span class="w-name">程家桥 · 人文生态骑行挑战赛</span>
+          <span class="w-meta">2025 上海城市业余联赛 活动视觉与落地物料 · 28 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+      <a class="work-row rv" data-thumb="assets/images/shineyou/shineyou-01.png" href="work-shineyou.html">
+        <span class="w-idx">09</span>
+        <span class="w-body">
+          <span class="w-name">尚誉 ShineYou · 冻转鲜面包</span>
+          <span class="w-meta">烘焙品牌「冻转鲜」产品线包装系统设计 · 4 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+      <a class="work-row rv" data-thumb="assets/images/aiwan/aiwan-01.webp" href="work-aiwan.html">
+        <span class="w-idx">10</span>
+        <span class="w-body">
+          <span class="w-name">爱玩五月 · 春日活动</span>
+          <span class="w-meta">平台节日运营活动视觉物料 · 五月 / 春日两期 · 14 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+      <a class="work-row rv" data-thumb="assets/images/shizai/shizai-01.webp" href="work-shizai.html">
+        <span class="w-idx">11</span>
+        <span class="w-body">
+          <span class="w-name">石器时代</span>
+          <span class="w-meta">游戏下载活动推广视觉与专题页物料 · 12 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+      <a class="work-row rv" data-thumb="assets/images/wk47/wk47-01.webp" href="work-wk47.html">
+        <span class="w-idx">12</span>
+        <span class="w-body">
+          <span class="w-name">我可以47</span>
+          <span class="w-meta">综艺宣推视觉 · 海报 / 长页 / 集卡与动效物料 · 14 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+      <a class="work-row rv" data-thumb="assets/images/yuanmeng/yuanmeng-01.webp" href="work-yuanmeng.html">
+        <span class="w-idx">13</span>
+        <span class="w-body">
+          <span class="w-name">元梦之星</span>
+          <span class="w-meta">游戏推广视觉 · 海报 / 广告位与角色卡牌 · 14 IMAGES</span>
+        </span>
+        <span class="w-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19L19 5"/><path d="M9 5h10v10"/></svg>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <section class="awards wrap" id="awards">
+    <div class="sec-head rv">
+      <h2 class="tt">awards</h2>
+      <p class="ts">赛事获奖 / 荣誉</p>
+    </div>
+    <div class="awards-grid">
+      <article class="award rv">
+        <div class="award-img"><img src="assets/images/award-01.jpg" alt="首届金彩奖创意品牌设计大赛 三等奖 琅琊古城IP形象设计 获奖证书" loading="lazy"></div>
+        <p class="t1">首届“金彩奖”创意品牌设计大赛</p>
+        <p class="t2">三等奖 · 琅琊古城 IP 形象设计</p>
+        <p class="t3">山东工艺美术学院视觉传达设计学院 · 2026 年 7 月</p>
+      </article>
+      <article class="award rv">
+        <div class="award-img"><img src="assets/images/award-02.jpg" alt="首届金彩奖创意品牌设计大赛 二等奖 齐小蔓品牌LOGO与形象设计 获奖证书" loading="lazy"></div>
+        <p class="t1">首届“金彩奖”创意品牌设计大赛</p>
+        <p class="t2">二等奖 · “齐小蔓”品牌 LOGO 与形象设计</p>
+        <p class="t3">山东工艺美术学院视觉传达设计学院 · 2026 年 7 月</p>
+      </article>
+      <article class="award rv">
+        <div class="award-img"><img src="assets/images/award-03.jpg" alt="首届金彩奖创意品牌设计大赛 二等奖 山海金选LOGO设计 获奖证书" loading="lazy"></div>
+        <p class="t1">首届“金彩奖”创意品牌设计大赛</p>
+        <p class="t2">二等奖 · 山海金选 LOGO 设计</p>
+        <p class="t3">山东工艺美术学院视觉传达设计学院 · 2026 年 7 月</p>
+      </article>
+      <article class="award rv">
+        <div class="award-img"><img src="assets/images/cert-scan-01.jpg" alt="2025第六届山东省精品旅游文创设计大赛 社会组三等奖 琅琊名士人物系列冰箱贴 获奖证书扫描版" loading="lazy"></div>
+        <p class="t1">2025 第六届山东省精品旅游文创设计大赛</p>
+        <p class="t2">社会组 · 三等奖 · 《琅琊名士-人物系列冰箱贴》</p>
+        <p class="t3">山东省文化和旅游厅 等联合颁发 · 2025 年 12 月</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="about wrap" id="profile">
+    <div class="sec-head rv">
+      <h2 class="tt">about</h2>
+      <p class="ts">关于我 / PROFILE</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-face rv">
+        <img src="assets/images/portrait.jpg" alt="刘一锟" loading="lazy">
+      </div>
+      <div class="about-body rv">
+        <p class="about-name">刘一锟 <span>LIU YIKUN</span></p>
+        <p class="about-role">设计师 / 高校设计课教师 / 地域文创实践者</p>
+        <p>👋 我是刘一锟，数字媒体艺术出身，曾在腾讯视频《明日之子 2》项目组做综艺视觉，现在临沂高校教设计课——白天上课，业余接项目，节奏双模切换 😎</p>
+        <p>🎯 最着迷的事：把地域文化做成看得见、记得住、用得上的设计。品牌 IP、视觉系统、角色和文创，都是我工具箱里的家伙事儿。</p>
+        <p>⚡ 综艺项目磨出来的「快」，文化调研泡出来的「慢」，两种模式随时切换。有项目想聊？页脚邮箱直达 📮</p>
+        <dl class="about-dl">
+          <div class="row"><dt>EDUCATION</dt><dd>山东工艺美术学院 · 数字媒体艺术专业<span class="t">数字媒介功底打底，打通视觉设计、交互表达与内容叙事</span></dd></div>
+          <div class="row"><dt>EXPERIENCE</dt><dd>
+            <span class="job">腾讯视频《明日之子 2》项目组 · 综艺视觉实习<i>互联网综艺练出来的快节奏：多任务并行、甲方导向、版本快速迭代</i></span>
+            <span class="job">临沂市高级财经学校 · 专业课教师（现职）<i>把讲台当充电桩，研究重心转向本土传统文化与数字文旅融合</i></span>
+            <span class="job">古城文旅 IP · 地域文创品牌 设计实践<i>符号提炼、IP 塑造、视觉系统搭建，让地方历史活在当下</i></span>
+          </dd></div>
+          <div class="row"><dt>CAPABILITIES</dt><dd>品牌 IP 设计 / VI 视觉系统 / 角色设计 / 文旅文创 / 综艺与商业视觉 / 视觉传达</dd></div>
+        </dl>
+        <div class="cert-inline">
+          <img src="assets/images/certificate-ps.jpg" alt="Adobe Photoshop 图像处理专家 结业证书 2021.08" loading="lazy">
+          <div class="ci-body">
+            <p class="ci-t">Photoshop 图像处理专家 · 结业证书</p>
+            <p class="ci-d">Expert in Image Editing &amp; Design using Adobe Photoshop · 刘一锟 YIKUN LIU</p>
+            <p class="ci-m">Adobe 授权培训中心 AATC · Zhope Learning Partner · 2021 年 8 月 · 技能认证</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="brands" id="collabs">
+    <div class="wrap sec-head rv">
+      <h2 class="tt">brands</h2>
+      <p class="ts">合作品牌 / 合作经历</p>
+    </div>
+    <div class="logo-marquee rv">
+      <div class="logo-track">
+        <div class="logo-group">
+            <div class="brand"><img src="assets/images/brands/tencent-video.svg" alt="腾讯视频"></div>
+            <div class="brand"><img src="assets/images/brands/sd-wenlv.png" alt="山东文旅"></div>
+            <div class="brand"><img src="assets/images/brands/zcool.svg" alt="站酷"></div>
+            <div class="brand"><img src="assets/images/brands/huaban.svg" alt="花瓣"></div>
+            <div class="brand"><img src="assets/images/brands/xiangsheji.png" alt="享设计"></div>
+            <div class="brand"><img src="assets/images/brands/cooler-master.svg" alt="酷冷至尊"></div>
+            <div class="brand"><img src="assets/images/brands/thunderobot.png" alt="雷神"></div>
+            <div class="brand"><img src="assets/images/brands/sd-caijin-group-t.png" alt="山东财金集团"></div>
+            <div class="brand"><img src="assets/images/brands/proartist-yajun-t.png" alt="雅浚"></div>
+        </div>
+        <div class="logo-group" aria-hidden="true">
+            <div class="brand"><img src="assets/images/brands/tencent-video.svg" alt="腾讯视频"></div>
+            <div class="brand"><img src="assets/images/brands/sd-wenlv.png" alt="山东文旅"></div>
+            <div class="brand"><img src="assets/images/brands/zcool.svg" alt="站酷"></div>
+            <div class="brand"><img src="assets/images/brands/huaban.svg" alt="花瓣"></div>
+            <div class="brand"><img src="assets/images/brands/xiangsheji.png" alt="享设计"></div>
+            <div class="brand"><img src="assets/images/brands/cooler-master.svg" alt="酷冷至尊"></div>
+            <div class="brand"><img src="assets/images/brands/thunderobot.png" alt="雷神"></div>
+            <div class="brand"><img src="assets/images/brands/sd-caijin-group-t.png" alt="山东财金集团"></div>
+            <div class="brand"><img src="assets/images/brands/proartist-yajun-t.png" alt="雅浚"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="contact" id="contact">
+    <div class="wrap contact-inner">
+      <h2 class="tt ct-tt rv">contact</h2>
+      <p class="ct-kicker rv">LET'S WORK TOGETHER · 刘一锟 · 数字媒体艺术设计师</p>
+      <p class="ct-mail-giant rv"><a href="mailto:872373106@qq.com"><span>872373106</span><span class="cm-at">@</span><span>qq</span><span class="cm-dot">.</span><span class="cm-com">com</span></a></p>
+      <a class="ct-top rv" href="#top">回到顶部 ↑</a>
+      <div class="ct-bar">
+        <span>© <span id="year"></span> 刘一锟 · LIU YIKUN</span>
+        <span><a href="mailto:872373106@qq.com">872373106@qq.com</a></span>
+        <span>PORTFOLIO</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- 作品列表悬停缩略图预览：body 直属 fixed 元素，跟随鼠标并钳制在视口内，不拦截指针事件 -->
+<span class="wk-preview" id="wkPreview" aria-hidden="true"><img alt="" decoding="async"></span>
+
+<script>window.REEL_COPY = [
+  {
+    "no": "01",
+    "name": "QI XIAOMAN 齐小蔓",
+    "desc": "农产品品牌人格化 IP 视觉全案",
+    "href": "work-qi-xiaoman.html"
+  },
+  {
+    "no": "02",
+    "name": "程家桥 · 人文生态骑行挑战赛",
+    "desc": "2025 上海城市业余联赛 活动视觉与落地物料",
+    "href": "work-chengqiao.html"
+  },
+  {
+    "no": "03",
+    "name": "山海金选",
+    "desc": "SHAN HAI JIN XUAN 品牌 VI",
+    "href": "work-shanhai.html"
+  },
+  {
+    "no": "04",
+    "name": "酷冷至尊 CoolerMaster",
+    "desc": "COOLER MASTER 品牌识别系统 2024",
+    "href": "work-coolermaster.html"
+  },
+  {
+    "no": "05",
+    "name": "尚誉 ShineYou · 冻转鲜面包",
+    "desc": "烘焙品牌「冻转鲜」产品线包装系统设计",
+    "href": "work-shineyou.html"
+  }
+];</script>
+</body>
+</html>
