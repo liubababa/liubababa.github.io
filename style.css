@@ -56,6 +56,24 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 p, h1, h2, h3, dl, dd, dt, figure { margin: 0; }
 
+/* 触屏点按不再等待双击缩放判定，反馈即时 */
+a, button { touch-action: manipulation; }
+
+/* 键盘焦点：全站统一 2px 荧光绿描边 + 3px 间距，与暗底对比充足 */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ---------- 图片渐进显影 ----------
+   初始隐藏态挂在 .has-reveal 上（由 JS 注入），因此禁用 JS 时图片默认可见。
+   选择器刻意保持 (0,2,1) 权重，好让文件后段的 :hover 缩放规则按源码顺序胜出 */
+.has-reveal .gimg img,
+.has-reveal .about-face img {
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 0.8s var(--ease), transform 1.1s var(--ease);
+}
+.gimg img.is-loaded,
+.about-face img.is-loaded { opacity: 1; transform: none; }
+
 .wrap {
   width: 100%;
   max-width: var(--maxw);
@@ -180,9 +198,12 @@ section[id], article[id] { scroll-margin-top: 96px; }
   font-size: 14px;
   border: 1px solid rgba(255, 253, 250, 0.28);
   border-radius: 999px;
+  /* 位移由 JS 写入 --mx/--my（磁吸，仅精确指针设备），按压缩放只改 --sc，互不覆盖 */
+  transform: translate(var(--mx, 0px), var(--my, 0px)) scale(var(--sc, 1));
   transition: color 0.4s var(--ease), border-color 0.4s var(--ease), background 0.4s var(--ease);
 }
 .btn-line:hover { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+.btn-line:active { --sc: 0.972; }
 .btn-line.ghost { border-color: rgba(255, 253, 250, 0.14); color: var(--dim); }
 .btn-line.ghost:hover { color: var(--ink); background: var(--fg); border-color: var(--fg); }
 
@@ -379,6 +400,22 @@ section[id], article[id] { scroll-margin-top: 96px; }
 }
 .reel-caption:hover .rc-view { background: var(--accent); color: var(--ink); border-color: var(--accent); }
 
+/* 自动轮播的暂停开关：持续自动播放的动效必须留一个可关闭的入口。
+   放在舞台右上角，避开左上水滴与底部进度线，320px 窄屏下也不会压到水滴热区 */
+.reel-toggle {
+  position: absolute;
+  top: 16px;
+  right: var(--pad);
+  z-index: 7;
+  padding: 8px 0 8px 12px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  transition: color 0.35s var(--ease);
+}
+.reel-toggle:hover, .reel-toggle:focus-visible { color: var(--accent); }
+
 /* ============================================================
    区块标题
    ============================================================ */
@@ -439,6 +476,8 @@ section[id], article[id] { scroll-margin-top: 96px; }
 }
 .work-row:hover::before, .work-row:focus-visible::before { transform: scaleX(1); }
 .work-row:hover, .work-row:focus-visible { color: var(--ink); }
+/* 触屏没有 hover，用点按瞬间的浅色底给出「按到了」的确认 */
+.work-row:active { background: rgba(191, 255, 0, 0.07); }
 
 /* tigranz 式编号直接隐去，保持行内只有项目名 + 箭头 */
 .w-idx { display: none; }
@@ -922,6 +961,7 @@ section[id], article[id] { scroll-margin-top: 96px; }
 }
 .pn-item:hover { color: var(--ink); }
 .pn-item:hover::before { transform: scaleX(1); }
+.pn-item:active { background: rgba(191, 255, 0, 0.07); }
 .pn-k { display: block; font-size: 11px; letter-spacing: 0.18em; color: var(--dim); text-transform: uppercase; }
 .pn-n { display: block; font-size: clamp(18px, 2.4vw, 33px); font-weight: 500; margin-top: 12px; letter-spacing: -0.01em; }
 .pn-item:hover .pn-k { color: rgba(9, 10, 12, 0.55); }
@@ -933,6 +973,8 @@ section[id], article[id] { scroll-margin-top: 96px; }
   opacity: 0;
   transform: translateY(26px);
   transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  /* 错峰入场：JS 按元素次序写入 --d，同批元素依次落位而非齐刷刷弹出 */
+  transition-delay: var(--d, 0ms);
 }
 .rv.in { opacity: 1; transform: none; }
 
@@ -966,10 +1008,17 @@ section[id], article[id] { scroll-margin-top: 96px; }
 .claim-src.rv { transition-delay: 0.65s; }
 .hero-cta.rv { transition-delay: 0.8s; }
 
-/* 区块巨型标题：滚动进入时从下方带一点旋转升起（sec-head 裁切出遮罩效果） */
+/* 区块巨型标题：逐字错峰升起（字符由 main.js 拆分；未拆分时退回父级整体渐显）。
+   触发条件是「任意祖先拿到 .in」——首页 .rv 挂在 .sec-head 上，contact 则在 .ct-tt 自身 */
 .sec-head { overflow: hidden; }
-.sec-head .tt.rv { transform: translateY(115%) rotate(2.5deg); transition-duration: 1.05s; }
-.sec-head .tt.rv.in { transform: none; }
+.tt-ch {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.44em) rotate(5deg);
+  transition: opacity 0.7s var(--ease), transform 0.95s var(--ease);
+  transition-delay: calc(var(--i, 0) * 58ms);
+}
+.in .tt-ch { opacity: 1; transform: none; }
 
 /* 轮播 Ken Burns：当前图缓缓收紧 */
 .reel-slide.is-active img { animation: reelkb 6.5s var(--ease) forwards; }
@@ -1027,6 +1076,16 @@ body::after {
   80% { transform: translate(4%, 4%); }
   100% { transform: translate(0, 0); }
 }
+
+/* ============================================================
+   站内跳转过渡：View Transitions（Chromium 120+ 生效，其余浏览器
+   直接硬跳，零副作用）。旧页轻微放大淡出，新页略微收拢淡入
+   ============================================================ */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: vt-out 0.26s var(--ease) both; }
+::view-transition-new(root) { animation: vt-in 0.4s var(--ease) both; }
+@keyframes vt-out { to { opacity: 0; transform: scale(1.012); } }
+@keyframes vt-in { from { opacity: 0; transform: scale(0.988); } }
 
 /* ============================================================
    响应式
@@ -1095,4 +1154,5 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
   .rv { opacity: 1; transform: none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
 }

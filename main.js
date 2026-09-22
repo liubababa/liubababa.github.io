@@ -7,6 +7,20 @@
 
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- 图片渐进显影：解码完成后落位，避免大图硬闪 ----------
+     初始隐藏态由 .has-reveal 承载，减弱动效时不注入，图片按默认方式出现；
+     已经加载完的图直接落位，不会先闪一下再淡入 */
+  var revealImgs = Array.prototype.slice.call(document.querySelectorAll('.gimg img, .about-face img'));
+  if (revealImgs.length && !reduced) {
+    document.documentElement.classList.add('has-reveal');
+    revealImgs.forEach(function (img) {
+      var settle = function () { img.classList.add('is-loaded'); };
+      if (img.complete && img.naturalWidth) { settle(); return; }
+      img.addEventListener('load', settle, { once: true });
+      img.addEventListener('error', settle, { once: true });
+    });
+  }
+
   /* ---------- 年份 ---------- */
   var y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
@@ -131,6 +145,7 @@
     var STEP = 4000;
     var cur = 0;
     var hold = false;
+    var userPaused = false;
     var timer = null;
     var copySeq = 0;
 
@@ -175,7 +190,8 @@
 
     function start() {
       window.clearInterval(timer);
-      if (reduced || slides.length < 2) return;
+      timer = null;
+      if (reduced || slides.length < 2 || userPaused) return;
       timer = window.setInterval(function () { if (!hold) go(1); }, STEP);
     }
 
@@ -288,11 +304,45 @@
     }
 
     document.addEventListener('visibilitychange', function () {
-      if (document.hidden) { window.clearInterval(timer); } else { start(); }
+      if (document.hidden) { window.clearInterval(timer); timer = null; } else { start(); }
     });
+
+    /* 自动轮播属于「无人操作也会自己动」的动效，按可达性要求给它一个显式开关。
+       减弱动效时不存在自动播放，故不注入 */
+    var toggle = null;
+    function syncToggle() {
+      if (!toggle) return;
+      toggle.textContent = userPaused ? 'Play' : 'Pause';
+      toggle.setAttribute('aria-label', userPaused ? '继续自动播放代表作品' : '暂停自动播放代表作品');
+    }
+    if (!reduced && slides.length > 1 && stage) {
+      toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'reel-toggle';
+      toggle.addEventListener('click', function () {
+        userPaused = !userPaused;
+        if (userPaused) { window.clearInterval(timer); timer = null; } else { start(); }
+        syncToggle();
+      });
+      stage.appendChild(toggle);
+      syncToggle();
+    }
+
+    /* 方向键切换（纯增量：不改动原有 Tab 顺序，键盘照旧可逐个 Tab 到水滴） */
+    var tablist = document.querySelector('.reel-dropbtns');
+    if (tablist && btns.length > 1) {
+      tablist.addEventListener('keydown', function (e) {
+        var dir = e.key === 'ArrowRight' ? 1 : (e.key === 'ArrowLeft' ? -1 : 0);
+        if (!dir) return;
+        e.preventDefault();
+        go(dir);
+        if (btns[cur]) btns[cur].focus();
+      });
+    }
 
     paint(0);
     start();
+    syncToggle();
   }
 
   /* ---------- 动效增强：字标逐字入场 · 顶部进度条 · 光标跟随点 · 速度感应文字带 ---------- */
@@ -319,6 +369,35 @@
       });
       wm.textContent = '';
       wm.appendChild(frag);
+    });
+
+    /* 区块巨型标题逐字拆分：与首屏字标共用同一套「错峰上浮」语言。
+       .tt 内含纯文本，::after 的荧光绿句点不受影响 */
+    Array.prototype.slice.call(document.querySelectorAll('.tt')).forEach(function (tt) {
+      var text = (tt.textContent || '').trim();
+      if (!text) return;
+      var frag = document.createDocumentFragment();
+      Array.prototype.forEach.call(text, function (ch, i) {
+        var s = document.createElement('span');
+        s.className = 'tt-ch';
+        s.style.setProperty('--i', i);
+        s.textContent = ch;
+        frag.appendChild(s);
+      });
+      tt.textContent = '';
+      tt.appendChild(frag);
+    });
+
+    /* 错峰入场：同批元素依次递延，避免整组齐刷刷弹入的机械感。
+       用取模把延迟收敛在一个小节拍内，靠后的元素不必干等前面的 */
+    [
+      ['.work-list .work-row', 55, 5],
+      ['.awards-grid .award', 70, 4],
+      ['.gallery > figure', 60, 4]
+    ].forEach(function (spec) {
+      Array.prototype.slice.call(document.querySelectorAll(spec[0])).forEach(function (el, i) {
+        el.style.setProperty('--d', (i % spec[2]) * spec[1] + 'ms');
+      });
     });
 
     /* 注入进度条与光点 */
@@ -355,6 +434,22 @@
     var lastY = window.pageYOffset;
     var vel = 0;
 
+    /* 磁吸按钮：光标靠近时按钮朝指针轻微让位，离开后弹回。
+       位移写进 --mx/--my，与 :active 的 --sc 缩放互不覆盖（见 style.css 的 .btn-line） */
+    var mags = [];
+    if (fineHover) {
+      Array.prototype.slice.call(document.querySelectorAll('.btn-line')).forEach(function (el) {
+        var o = { el: el, tx: 0, ty: 0, x: 0, y: 0, lx: null, ly: null };
+        el.addEventListener('mousemove', function (e) {
+          var r = el.getBoundingClientRect();
+          o.tx = (e.clientX - (r.left + r.width / 2)) * 0.26;
+          o.ty = (e.clientY - (r.top + r.height / 2)) * 0.34;
+        }, { passive: true });
+        el.addEventListener('mouseleave', function () { o.tx = 0; o.ty = 0; }, { passive: true });
+        mags.push(o);
+      });
+    }
+
     (function tick() {
       var y = window.pageYOffset;
       vel += ((y - lastY) - vel) * 0.14;
@@ -372,6 +467,19 @@
       }
 
       var sk = Math.max(-12, Math.min(12, vel * 0.3));
+
+      /* 磁吸插值：复用同一条 rAF，不额外开循环；值没变化时不写样式 */
+      for (var m = 0; m < mags.length; m++) {
+        var mg = mags[m];
+        mg.x += (mg.tx - mg.x) * 0.16;
+        mg.y += (mg.ty - mg.y) * 0.16;
+        var sx = mg.x.toFixed(2), sy = mg.y.toFixed(2);
+        if (sx === mg.lx && sy === mg.ly) continue;
+        mg.lx = sx;
+        mg.ly = sy;
+        mg.el.style.setProperty('--mx', sx + 'px');
+        mg.el.style.setProperty('--my', sy + 'px');
+      }
       for (var i = 0; i < tracks.length; i++) {
         var t = tracks[i];
         var half = t.scrollWidth / 2;
