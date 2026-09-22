@@ -47,6 +47,7 @@ body {
   letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
   overflow-x: hidden;
 }
 
@@ -1050,7 +1051,7 @@ body::after {
   .reel-stage { aspect-ratio: 4 / 3; }
   .reel-caption { bottom: 48px; }
 
-  .work-row { grid-template-columns: 40px 1fr 24px; gap: 12px; }
+  .work-row { grid-template-columns: 1fr 24px; gap: 12px; }
 
   .about-grid { grid-template-columns: 1fr; }
   .about-face img { aspect-ratio: 4 / 3; }
@@ -1071,6 +1072,24 @@ body::after {
   .hero-cta { flex-direction: column; align-items: stretch; }
   .btn-line { text-align: center; }
   .brands .sec-head { margin-left: 0; margin-right: 0; }
+}
+
+/* ============================================================
+   触屏端：没有 hover 离开事件，手指点过的行会永久停在悬停态
+   （整行荧光绿填充 + 文字反色 + 位移），此处逐条中和
+   ============================================================ */
+@media (hover: none), (pointer: coarse) {
+  .work-row:hover::before, .pn-item:hover::before { transform: scaleX(0); }
+  .work-row:hover, .pn-item:hover { color: var(--fg); }
+  .work-row:hover .w-name,
+  .work-row:hover .w-meta { transform: none; }
+  .work-row:hover .w-meta { color: var(--dim); }
+  .work-row:hover .w-name::before { max-width: 0; margin-right: 0; }
+  .work-row:hover .w-arrow svg { transform: none; color: inherit; }
+  .pn-item:hover .pn-k { color: var(--dim); }
+  .gimg:hover img { transform: none; }
+  .award:hover .award-img img { transform: none; filter: grayscale(0.15); }
+  .reel-caption:hover .rc-view { background: none; color: var(--accent); }
 }
 
 @media (prefers-reduced-motion: reduce) {
