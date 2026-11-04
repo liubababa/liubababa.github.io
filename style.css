@@ -4,10 +4,13 @@
    强调色仅在交互态出现
    ============================================================ */
 
-/* ---------- 字体：正文黑体栈 + 展示层字魂扁桃体（圆体，承担巨型标题/字标） ---------- */
+/* ---------- 字体：正文黑体栈 + 展示层字魂扁桃体（圆体，承担巨型标题/字标） ----------
+   font-zh.ttf 是子集：仅含可打印 ASCII + 「作品集」三字与常用中文标点（原 2.2MB → 24KB）。
+   完整原件留在 fonts/字魂扁桃体.ttf。若日后给 .tt 区块标题加中文，需先用原件重新子集，
+   否则缺字会静默回退到系统黑体。 */
 @font-face {
   font-family: 'ZiHunBianTaoTi';
-  src: url('fonts/font-zh.ttf') format('truetype');
+  src: url('fonts/font-zh.ttf?v=20261104a') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -175,7 +178,8 @@ section[id], article[id] { scroll-margin-top: 96px; }
   line-height: 1.15;
   letter-spacing: 0.08em;
   color: var(--fg);
-  margin-top: clamp(10px, 1.6vw, 22px);
+  /* 下放开间距：字标 y 的下勾按 0.292em 伸出，原 1.6vw 上限 22px 在 1920 宽会被斜杠压住 2.8px */
+  margin-top: clamp(12px, 2vw, 36px);
 }
 .wordmark-cn .wm-sep { color: var(--accent); margin: 0 0.35em; font-weight: 400; }
 .claim-src {
@@ -992,12 +996,15 @@ section[id], article[id] { scroll-margin-top: 96px; }
 @keyframes blob3 { to { transform: translate(6vw, -14vh) scale(1.22); } }
 .hero-inner { position: relative; z-index: 1; }
 
-/* 首屏字标逐字弹入（字符由 main.js 拆分） */
-.wordmark { overflow: hidden; padding-bottom: 0.06em; }
+/* 首屏字标逐字弹入（字符由 main.js 拆分）
+   裁切框必须容得下「y」的下勾：该字体下勾伸出基线 0.292em，而 line-height 0.92 只留到基线以下
+   0.06em，直接裁会切掉约八成，名字读成 liuvikun。补 0.3em 下内边距撑开裁切框，再用等高负外边距
+   保持版式位置不变；入场位移随之放大到 150%，确保初始字符仍完全落在裁切框之外。 */
+.wordmark { overflow: hidden; padding-bottom: 0.3em; margin-bottom: -0.3em; }
 .wm-ch {
   display: inline-block;
   opacity: 0;
-  transform: translateY(120%) rotate(8deg);
+  transform: translateY(150%) rotate(8deg);
   animation: wm-in 0.9s var(--ease) forwards;
   animation-delay: calc(var(--i, 0) * 50ms + 150ms);
 }
